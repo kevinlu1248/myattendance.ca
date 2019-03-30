@@ -78,6 +78,22 @@ class Query extends Dbh{
         return $sth;
     }
 
+    // Columns is an assoc array (password => p@ssword)
+    // Same with conditions
+    private function update(string $table, array $columns, array $conditions) {
+        $columnsInput = "";
+        foreach($columns as $key => $value) {
+            $columns .= "$key = $value, ";
+        }
+        $conditionsInput = "";
+        foreach($conditions as $key => $value) {
+            $conditions .= "$key = $value, ";
+        }
+
+        $sql = "UPDATE $table
+        SET "
+    }
+
     public function pw_hash(string $password) {
         return password_hash($password, PASSWORD_DEFAULT);
     }
