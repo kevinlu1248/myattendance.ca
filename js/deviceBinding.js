@@ -10,8 +10,8 @@ $(document).ready(function() {
         var startQR = new Date();
         var qrcode = new QRCode(document.getElementById("qrcode"), {
             text: "http://jindo.dev.naver.com/collie",
-            width: 256,
-            height: 256,
+            width: 350,
+            height: 350,
             colorDark : "#000000",
             colorLight : "#ffffff",
         });

@@ -15,6 +15,10 @@
             <div class="form-group">
                 <input type="number" placeholder="Student ID" class="form-control input-box" min="100000" max="99999999" id="studentId" name="studentId" value="<?php echo $user['studentID']; ?>">
             </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password" class="form-control input-box" id="password" name="password">
+            </div>
+            <p class="text-danger" id="dataChangeInvalidity" hidden>Please complete all fields</p>
             <button id="submitPersonalDataChange" type="submit" class="btn btn-primary" disabled>Change Personal Data</button>
         </form>
     </br>

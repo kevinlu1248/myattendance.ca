@@ -66,10 +66,10 @@ class Query extends Dbh{
     //Null for conditions returns all rows
     //Null for conditions returns all columns
     //Null for limit returns as many as possible
-    private function getData(array $columns = NULL, string $table = "users", string $conditions = NULL, int $limit = -1) {
+    private function getData(array $columns = NULL, string $table = "users", string $conditions = NULL, int $limit = 0) {
         $columnsInput = ($columns === NULL ? "*" : implode(",", $columns));
         $conditionsInput = ($conditions === NULL ? "" : " WHERE $conditions");
-        $limitInput = ($limit === -1 ? "" : " LIMIT $limit");
+        $limitInput = ($limit === 0 ? "" : " LIMIT $limit");
         $sql = "SELECT $columnsInput FROM $table$conditionsInput$limitInput";
         //$inputs = [$table, $conditionsInput];
         //echo var_dump($inputs);
@@ -78,20 +78,28 @@ class Query extends Dbh{
         return $sth;
     }
 
-    // Columns is an assoc array (password => p@ssword)
-    // Same with conditions
-    private function update(string $table, array $columns, array $conditions) {
-        $columnsInput = "";
-        foreach($columns as $key => $value) {
-            $columns .= "$key = $value, ";
-        }
-        $conditionsInput = "";
-        foreach($conditions as $key => $value) {
-            $conditions .= "$key = $value, ";
-        }
+    // lIMIT = 0 implies no limits
+    // $columns and conditions directly go into the sql string
+    protected function update(string $table, string $columns, string $conditions, int $limit = 0) {
+        // $columnsInput = "";
+        // foreach($columns as $key => $value) {
+        //     $columns .= "$key = $value, ";
+        // }
+        // $conditionsInput = "";
+        // foreach($conditions as $key => $value) {
+        //     $conditions .= "$key = $value, ";
+        // }
 
+        // $sql = "UPDATE $table
+        // SET "
         $sql = "UPDATE $table
-        SET "
+        SET $columns
+        WHERE $conditions"
+        if ($limit) {
+            $sql .= "\n LIMIT $limit;";
+        }
+        $sth = self::run($sql);
+        return $sth;
     }
 
     public function pw_hash(string $password) {

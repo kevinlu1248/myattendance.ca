@@ -1,7 +1,24 @@
 $(document).ready(function() {
     // for personal data changes
-    $("#personalDataChange div input").focus(function() {
-        $("#submitPersonalDataChange").prop("disabled", false);
+    // $("#personalDataChange div input").focus(function() {
+    //     $("#submitPersonalDataChange").prop("disabled", false);
+    // });
+
+    $("#personalDataChange div input").keyup(function() {
+        var isValid = true;
+        $("#personalDataChange div input").each(function() {
+            if ($(this).val().length == 0) {
+                isValid = false;
+            }
+        });
+
+        if (isValid) {
+            $("#dataChangeInvalidity").attr("hidden", true);
+            $("#submitPersonalDataChange").prop("disabled", false);
+        } else {
+            $("#dataChangeInvalidity").attr("hidden", false);
+            $("#submitPersonalDataChange").prop("disabled", true);
+        }
     });
 
 
