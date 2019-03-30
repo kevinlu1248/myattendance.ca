@@ -80,6 +80,7 @@ class Query extends Dbh{
 
     // lIMIT = 0 implies no limits
     // $columns and conditions directly go into the sql string
+    //check ../formActions/personalDataChange.php for an example
     protected function update(string $table, string $columns, string $conditions, int $limit = 0) {
         // $columnsInput = "";
         // foreach($columns as $key => $value) {
@@ -136,6 +137,7 @@ class Query extends Dbh{
         return $this_result->append($result);
     }
 
+    // columns is list of wanted columns
     protected function getUser(string $value, string $column, array $columns = NULL) {
         return self::getData($columns, "users", "$column='$value'", 1);
     }
