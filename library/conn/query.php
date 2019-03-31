@@ -81,21 +81,21 @@ class Query extends Dbh{
     // lIMIT = 0 implies no limits
     // $columns and conditions directly go into the sql string
     //check ../formActions/personalDataChange.php for an example
-    protected function update(string $table, string $columns, string $conditions, int $limit = 0) {
-        // $columnsInput = "";
-        // foreach($columns as $key => $value) {
-        //     $columns .= "$key = $value, ";
-        // }
-        // $conditionsInput = "";
-        // foreach($conditions as $key => $value) {
-        //     $conditions .= "$key = $value, ";
-        // }
+    protected function update(string $table, array $columns, array $conditions, int $limit = 0) {
+        $columnsInput = "";
+        $conditionsInput = "";
+        foreach ($columns as $key => $value) {
+            $columnsInput .= "$key = $value, ";
+        }
+        foreach ($conditions as $key => $value) {
+            $conditionsInput .= "$key = $value, ";
+        }
+        $columnsInput = rtrim($columnsInput, ", ");
+        $conditionsInput = rtrim($conditionsInput, ", ");
 
-        // $sql = "UPDATE $table
-        // SET "
         $sql = "UPDATE $table
-        SET $columns
-        WHERE $conditions"
+        SET $columnsInput
+        WHERE $conditionsInput";
         if ($limit) {
             $sql .= "\n LIMIT $limit;";
         }

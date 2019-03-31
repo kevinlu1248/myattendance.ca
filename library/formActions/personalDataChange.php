@@ -22,8 +22,12 @@ class dataChange extends Query {
         $this->passwordIsCorrect = password_verify($this->password, $hash);
 
         if ($this->passwordIsCorrect) {
-            $changes = "first = $newFirst, last = $newLast";
-            $query = Query::update("user", "first = $newFirst, last ");
+            $changes = array (
+                'first' => $this->newFirst,
+                'last' => $this->newLast,
+                'studentID' => $this->newStudentId);
+            $conditions = array ('ID' => $this->uid);
+            $query = Query::update("user", $changes, $conditions, 1);
         }
     }
 }
