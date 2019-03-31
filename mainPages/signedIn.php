@@ -42,6 +42,7 @@
         </form>
     </div>
 </div>
+
 <div class="col-sm">
     <div id="device-binder" class="card text-justify">
       <div id="qrcode" class="card-img-top text-center">

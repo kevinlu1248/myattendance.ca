@@ -8,7 +8,7 @@ class QueryResponse {
     public $result;
     //public $didSucceed;
 
-    public function __construct(array $errs, PDOStatement $result) {
+    public function __construct(array $errs, $result) {
         $this->errs = $errs;
         $this->result = $result;
     }
@@ -46,6 +46,7 @@ class Query extends Dbh{
         }
         //echo var_dump(new QueryResponse($errs, $result));
         //echo [$sql, $inputs];
+        // var_dump($result);
         return new QueryResponse($errs, $result);
     }
 
@@ -66,11 +67,25 @@ class Query extends Dbh{
     //Null for conditions returns all rows
     //Null for conditions returns all columns
     //Null for limit returns as many as possible
-    private function getData(array $columns = NULL, string $table = "users", string $conditions = NULL, int $limit = 0) {
-        $columnsInput = ($columns === NULL ? "*" : implode(",", $columns));
-        $conditionsInput = ($conditions === NULL ? "" : " WHERE $conditions");
+    // SELECT column1, column2, ...
+    // FROM table_name;
+    private function getData(array $columns = NULL, string $table = "users", array $conditions = NULL, int $limit = 0) {
+        $columnsInput = ($columns === NULL ? "*" : implode(", ", $columns));
+
+        $conditionsInput = ($conditions === NULL ? "" : " WHERE ");
+        if ($conditions !== NULL) {
+            foreach ($conditions as $key => $value) {
+                if (is_int($value)) {
+                    $conditionsInput .= "$key = $value, ";
+                } else {
+                    $conditionsInput .= "$key = '$value', ";
+                }
+            }
+        }
+        $conditionsInput = rtrim($conditionsInput, ", ");
+
         $limitInput = ($limit === 0 ? "" : " LIMIT $limit");
-        $sql = "SELECT $columnsInput FROM $table$conditionsInput$limitInput";
+        $sql = "SELECT $columnsInput FROM $table$conditionsInput$limitInput;";
         //$inputs = [$table, $conditionsInput];
         //echo var_dump($inputs);
         // return $sql;
@@ -85,10 +100,18 @@ class Query extends Dbh{
         $columnsInput = "";
         $conditionsInput = "";
         foreach ($columns as $key => $value) {
-            $columnsInput .= "$key = $value, ";
+            if (is_int($value)) {
+                $columnsInput .= "$key = $value, ";
+            } else {
+                $columnsInput .= "$key = '$value', ";
+            }
         }
         foreach ($conditions as $key => $value) {
-            $conditionsInput .= "$key = $value, ";
+            if (is_int($value)) {
+                $conditionsInput .= "$key = $value, ";
+            } else {
+                $conditionsInput .= "$key = '$value', ";
+            }
         }
         $columnsInput = rtrim($columnsInput, ", ");
         $conditionsInput = rtrim($conditionsInput, ", ");
@@ -139,7 +162,7 @@ class Query extends Dbh{
 
     // columns is list of wanted columns
     protected function getUser(string $value, string $column, array $columns = NULL) {
-        return self::getData($columns, "users", "$column='$value'", 1);
+        return self::getData($columns, "users", array($column => $value), 1);
     }
 
     // check if row exists in database
@@ -168,6 +191,6 @@ class Query extends Dbh{
     }
 
     public function getIDByEmail(string $email){
-        return self::getData(["ID"], "users", "email='$email'", 1)->result->fetch(PDO::FETCH_NUM)[0];
+        return self::getData(["ID"], "users", array("email" => $email), 1)->result->fetch(PDO::FETCH_NUM)[0];
     }
 }

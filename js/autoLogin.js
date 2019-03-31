@@ -10,8 +10,8 @@ $(document).ready(function() {
                 // error: function(err) {console.log(err)}
             })
             .done(function(result) {
+                console.log(result);
                 if (result) {
-                    console.log(result);
                     if (result == "1") {
                         location.reload();
                     }

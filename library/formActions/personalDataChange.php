@@ -28,6 +28,7 @@ class dataChange extends Query {
                 'studentID' => $this->newStudentId);
             $conditions = array ('ID' => $this->uid);
             $query = Query::update("user", $changes, $conditions, 1);
+            var_dump($query);
         }
     }
 }
