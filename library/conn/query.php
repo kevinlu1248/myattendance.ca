@@ -18,6 +18,7 @@ class QueryResponse {
     #$this overrides results
     public function append(QueryResponse $other) {
         $this->errs = array_merge($errs, $other->errs);
+        $this->didSucceed = ($this->didSucceed && $other->didSucceed);
         return $this;
     }
 }

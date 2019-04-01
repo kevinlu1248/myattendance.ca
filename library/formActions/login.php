@@ -29,8 +29,8 @@ class Login extends Query {
 
     private function connectUser() {
         //get user with this email
-        $user = parent::getUser($this->email, "email")->result->fetch(PDO::FETCH_ASSOC);
-        // var_dump(Query::getUser($this->email, "email"));
+        $user = Query::getUser($this->email, "email")->result->fetch(PDO::FETCH_ASSOC);
+        // var_dump($user);
         return $user;
     }
 
@@ -60,13 +60,11 @@ $fingerprint = $_POST['fingerprint'];
 // echo $fingerprint;
 $email = $_POST['email'];
 $password = $_POST['password'];
-echo $fingerprint;
-echo $email;
 
 $login = new Login($email, $password, $fingerprint);
-$passwordIsCorrect = $login->passwordIsCorrect;
-var_dump($login);
+$passwordIsCorrect = ($login->passwordIsCorrect) ? 'true' : 'false';
+// echo "$URL?passwordIsCorrect=$passwordIsCorrect";
 
 // echo var_dump($_COOKIE["email"]);
-// header("Location: $URL?passwordIsCorrect=$passwordIsCorrect");
-// exit();
+header("Location: $URL?passwordIsCorrect=$passwordIsCorrect");
+exit();

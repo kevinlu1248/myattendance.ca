@@ -4,7 +4,7 @@
         <h3>
             Personal Data Change
         </h3>
-        <form id="personalDataChange" action="../library/formActions/personalDataChange.php" method="POST">
+        <form id="personalDataChange" action="/myattendance.ca/library/formActions/personalDataChange.php" method="POST">
             <!-- <form id="signup" class="container text-center" action="../library/formActions/signup.php" method="POST"> -->
             <div class="form-group">
                 <input type="text" placeholder="First name" class="form-control input-box" id="first" autocomplete="given-name" name="first" value="<?php echo $first; ?>">

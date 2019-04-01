@@ -83,7 +83,7 @@
                 $user = $_SESSION["user"];
                 $passwordIsCorrect = $_GET["passwordIsCorrect"];
                 // $passwordIsCorrect == 0 means that login is incorrect
-                if ($user === NULL || $passwordIsCorrect === 0) {
+                if ($user == NULL || $passwordIsCorrect == "false") {
                     require_once "userDisplay/form.php";
                 } else {
                     require_once "userDisplay/user.php";
@@ -103,7 +103,7 @@
 </noscript>
 
 <?php
-    if ($passwordIsCorrect === 0) {
+    if ($passwordIsCorrect == "false") {
         require_once "loginFailure.php";
         unset($_SESSION["user"]);
     }

@@ -41,9 +41,10 @@ $newStudentId = $_POST["studentId"];
 $password = $_POST["password"];
 
 $dataChange = new dataChange($uid, $newFirst, $newLast, $newStudentId, $password);
-$passwordIsCorrect = $dataChange->passwordIsCorrect;
-$didSucceed = $dataChange->didSucceed;
+$passwordIsCorrect = ($dataChange->passwordIsCorrect) ? 'true' : 'false';
+$didSucceed = ($dataChange->didSucceed) ? 'true' : 'false';
+// var_dump($dataChange);
 // echo $didSucceed;
 
-header("Location: http://www.myattendance.ca/?password_is_correct=$passwordIsCorrect;success=$didSucceed");
+header("Location: $URL/?updatePasswordIsCorrect=$passwordIsCorrect&updateSuccess=$didSucceed");
 exit();
