@@ -8,7 +8,7 @@ class QueryResponse {
     public $result;
     public $didSucceed;
 
-    public function __construct(array $errs, $result, $didSucceed = true) {
+    public function __construct(array $errs, $result, bool $didSucceed = NULL) {
         $this->errs = $errs;
         $this->result = $result;
         $this->didSucceed = $didSucceed;
@@ -46,7 +46,6 @@ class Query extends Dbh{
             } else {
                 $didSucceed = $result->execute();
             }
-
             // }
         } catch (PDOException $e){
             $errs[] = $e->getMessage();
@@ -54,6 +53,7 @@ class Query extends Dbh{
         //echo var_dump(new QueryResponse($errs, $result));
         //echo [$sql, $inputs];
         // var_dump($result);
+        var_dump(new QueryResponse($errs, $result, $didSucceed));
         return new QueryResponse($errs, $result, $didSucceed);
     }
 
