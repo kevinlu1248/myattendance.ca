@@ -10,15 +10,21 @@ class Dbh {
     private $dsn;
 
     protected function connect() {
-        $this->servername = "db763042919.hosting-data.io";
-        $this->username = "dbo763042919";
-        $this->password = "qwrrty24";
-        $this->dbname = "db763042919";
+        // $this->servername = "db763042919.hosting-data.io";
+        // $this->username = "dbo763042919";
+        // $this->password = "qwrrty24";
+        // $this->dbname = "db763042919";
+        // $this->charset = "utf8";
+
+        $this->username = 'root';
+        $this->password = 'root';
+        $this->dbname = 'myattendance.ca';
+        $this->servername = 'localhost';
         $this->charset = "utf8";
 
         try {
-            $dsn = "mysql:host=".$this->servername.";dbname=".$this->dbname.";charset=".$this->charset.";";
-            $pdo = new PDO($dsn, $this->username, $this->password);
+            $this->dsn = "mysql:host=".$this->servername.";dbname=".$this->dbname.";charset=".$this->charset.";";
+            $pdo = new PDO($this->dsn, $this->username, $this->password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch (PDOException $e){
@@ -26,5 +32,4 @@ class Dbh {
         }
     }
 }
-
-
+$URL = "/myattendance.ca";

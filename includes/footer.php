@@ -1,10 +1,11 @@
 </div>
     <?php
         if (!($user || $logout === "true")) {
-            echo '<script src="/js/autoLogin.js"></script>';
+            echo '<script src="/myattendance.ca/js/autoLogin.js"></script>';
         }
     ?>
-    <script src="/js/main.js"></script>
+
+    <script src="/myattendance.ca/js/main.js"></script>
     <script>
         console.log(new Date() - start + " ms to load");
     </script>

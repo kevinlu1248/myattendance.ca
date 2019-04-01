@@ -38,7 +38,6 @@ $(document).ready(function(){
 
     var checkValidity = function() {
         $('#duplicate').hide();
-        var isTeacher = $("#isTeacher").val();
         var first = $('#first').val();
         var last = $('#last').val();
         var studentId = $('#studentId').val();

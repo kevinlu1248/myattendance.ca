@@ -5,40 +5,40 @@ $(document).ready(function() {
     // $('#samePassword').hide();
     // $('#invalidity').hide();
 
-    var pre = document.querySelector('pre');
-    var video = document.querySelector('video');
-    var myScript = document.querySelector('script');
-    var range = document.querySelector('input');
-    if (navigator.mediaDevices) {
-        console.log('getUserMedia supported.');
-        navigator.mediaDevices.getUserMedia({audio: true})
-            .then(stream => {
-                // $("#main").prepend("<div id='testCircle' style='height: 50px; width: 50px; background-color: red; border-radius: 50%'></div>");
-                var mediaRecorder = new MediaRecorder(stream);
-                var chunks = [];
-                mediaRecorder.start(1);
+    // var pre = document.querySelector('pre');
+    // var video = document.querySelector('video');
+    // var myScript = document.querySelector('script');
+    // var range = document.querySelector('input');
+    // if (navigator.mediaDevices) {
+    //     console.log('getUserMedia supported.');
+    //     navigator.mediaDevices.getUserMedia({audio: true})
+    //         .then(stream => {
+    //             // $("#main").prepend("<div id='testCircle' style='height: 50px; width: 50px; background-color: red; border-radius: 50%'></div>");
+    //             var mediaRecorder = new MediaRecorder(stream);
+    //             var chunks = [];
+    //             mediaRecorder.start(1);
 
-                mediaRecorder.ondataavailable = function(e) {
-                    var nblob = e.data;
-                    chunks.push(nblob);
-                    $("#testCircle").height(nblob.size);
-                    console.log(nblob);
-                }
+    //             mediaRecorder.ondataavailable = function(e) {
+    //                 var nblob = e.data;
+    //                 chunks.push(nblob);
+    //                 $("#testCircle").height(nblob.size);
+    //                 console.log(nblob);
+    //             }
 
-                mediaRecorder.onstop = function(e) {
-                    var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-                    chunks = [];
-                    var audioURL = URL.createObjectURL(blob);
-                    console.log(blob);
-                };
+    //             mediaRecorder.onstop = function(e) {
+    //                 var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+    //                 chunks = [];
+    //                 var audioURL = URL.createObjectURL(blob);
+    //                 console.log(blob);
+    //             };
 
-                // setTimeout(() => {
-                //     mediaRecorder.stop();
-                //     }, 30000);
-            });
-    } else {
-       console.log('getUserMedia not supported on your browser!');
-    }
+    //             // setTimeout(() => {
+    //             //     mediaRecorder.stop();
+    //             //     }, 30000);
+    //         });
+    // } else {
+    //    console.log('getUserMedia not supported on your browser!');
+    // }
 
     // Password viewing
     $('input[type="password"]').addClass('password');
@@ -72,23 +72,16 @@ $(document).ready(function() {
     });
     pw.tooltip();
 
-
-    // setTimeout(function () {
-    //     Fingerprint2.get(function (components) {
-    //         var values = components.map(function (component) { return component.value });
-    //         var murmur = Fingerprint2.x64hash128(values.join(''), 31);
-    //         $("#fingerprint").html(murmur);
-    //         $.ajax({
-    //             method: "POST",
-    //             url: "library/formActions/autoLogin.php",
-    //             success: function(result) {
-    //                 console.log(result);
-    //             }
-    //         });
-    //         // console.log(murmur);
-    //         // console.log(values);
-    //     })
-    // }, 200);
+    setTimeout(function () {
+        Fingerprint2.get(function (components) {
+            var values = components.map(function (component) { return component.value });
+            var murmur = Fingerprint2.x64hash128(values.join(''), 31);
+            $("#fingerprint").val(murmur);
+            $("#signin_fingerprint").val(murmur);
+            console.log(murmur);
+            // console.log(values);
+        })
+    }, 200);
 
     // if (navigator.geolocation) {
     //     navigator.geolocation.getCurrentPosition(function(position) {

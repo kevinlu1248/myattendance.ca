@@ -1,2 +1,4 @@
 <?php
-header("Location: http://www.myattendance.ca?logout=true");
+require_once "../conn/conn.php";
+header("Location: $URL?logout=true");
+exit();

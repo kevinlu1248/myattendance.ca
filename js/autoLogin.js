@@ -5,7 +5,7 @@ $(document).ready(function() {
             var murmur = Fingerprint2.x64hash128(values.join(''), 31);
             $.ajax({
                 method: "POST",
-                url: "../library/formActions/autoLogin.php",
+                url: "/myattendance.ca/library/formActions/autoLogin.php",
                 data: {fingerprint: murmur},
                 // error: function(err) {console.log(err)}
             })

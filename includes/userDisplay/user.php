@@ -10,7 +10,7 @@
         ?>
     </a>
 
-    <a id="logout" class="btn btn-outline-secondary h-25 float-left" href="../../library/formActions/logout.php">
+    <a id="logout" class="btn btn-outline-secondary h-25 float-left" href="/myattendance.ca/library/formActions/logout.php">
         Log out
     </a>
 </div>

@@ -11,7 +11,7 @@
     <meta name="description" content="A protoype for an attendance system.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#5DBCD2">
-    <link rel="icon" type="image/jpg" href="../assets/favicon.jpg">
+    <link rel="icon" type="image/jpg" href="/myattendance.ca/assets/favicon.jpg">
     <title>Attendance</title>
 
     <!--Bower-->
@@ -26,7 +26,7 @@
     <!-- <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> -->
     <!--User CSS-->
-    <link rel="stylesheet" type="text/css" href="../css/main.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="/myattendance.ca/css/main.css" media="screen"/>
 
     <!--Icons-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
@@ -80,9 +80,10 @@
                     unset($_SESSION["user"]);
                 }
 
-                $user = $_SESSION["user"];;
-                #$user == 0 means that login is incorrect
-                if ($user === NULL || $user === 0) {
+                $user = $_SESSION["user"];
+                $passwordIsCorrect = $_GET["passwordIsCorrect"];
+                // $passwordIsCorrect == 0 means that login is incorrect
+                if ($user === NULL || $passwordIsCorrect === 0) {
                     require_once "userDisplay/form.php";
                 } else {
                     require_once "userDisplay/user.php";
@@ -102,7 +103,7 @@
 </noscript>
 
 <?php
-    if ($user === 0) {
+    if ($passwordIsCorrect === 0) {
         require_once "loginFailure.php";
         unset($_SESSION["user"]);
     }

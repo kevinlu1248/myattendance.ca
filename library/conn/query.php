@@ -53,7 +53,6 @@ class Query extends Dbh{
         //echo var_dump(new QueryResponse($errs, $result));
         //echo [$sql, $inputs];
         // var_dump($result);
-        var_dump(new QueryResponse($errs, $result, $didSucceed));
         return new QueryResponse($errs, $result, $didSucceed);
     }
 
@@ -66,7 +65,6 @@ class Query extends Dbh{
         // array_unshift($inputs, $table);
         // for debugging
         // echo $sql . "</br>";
-        // echo var_dump($inputs);
         return self::run($sql, $inputs);
     }
 
@@ -133,7 +131,6 @@ class Query extends Dbh{
             $sql .= "\n LIMIT $limit;";
         }
 
-        // var_dump($inputs);
         $sth = self::run($sql, $inputs);
         return $sth;
     }

@@ -11,6 +11,10 @@ class Login extends Query {
     public $passwordIsCorrect;
 
     public function __construct(string $email, string $password, string $fingerprint) {
+        if (!($email && $password && $fingerprint)) {
+            $passwordIsCorrect = false;
+            return 0;
+        }
         $this->email = $email;
         $this->password = $password;
         $this->user = $this->connectUser();
@@ -20,8 +24,6 @@ class Login extends Query {
         if ($this->passwordIsCorrect) {
             $this->sessionize();
             $this->setAutoLogin();
-        } else {
-            $_SESSION["user"] = 0;
         }
     }
 
@@ -55,11 +57,16 @@ class Login extends Query {
 }
 
 $fingerprint = $_POST['fingerprint'];
-
+// echo $fingerprint;
 $email = $_POST['email'];
 $password = $_POST['password'];
+echo $fingerprint;
+echo $email;
+
 $login = new Login($email, $password, $fingerprint);
+$passwordIsCorrect = $login->passwordIsCorrect;
+var_dump($login);
 
 // echo var_dump($_COOKIE["email"]);
-header("Location: http://www.myattendance.ca");
-exit();
+// header("Location: $URL?passwordIsCorrect=$passwordIsCorrect");
+// exit();
