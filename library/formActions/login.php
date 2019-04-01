@@ -10,10 +10,11 @@ class Login extends Query {
     private $fingerprint;
     public $passwordIsCorrect;
 
-    public function __construct(string $email, string $password, $fingerprint) {
+    public function __construct(string $email, string $password, string $fingerprint) {
         $this->email = $email;
         $this->password = $password;
         $this->user = $this->connectUser();
+        $this->fingerprint = $fingerprint;
         $this->passwordIsCorrect = $this->verify();
 
         if ($this->passwordIsCorrect) {
@@ -43,8 +44,10 @@ class Login extends Query {
     }
 
     private function setAutoLogin() {
-        $query = Query::update("user", array("fingerprint" => $this->fingerprint), array("email" => $this->email), 1);
-        var_dump($query);
+        $query = Query::update("users", array("fingerprint" => $this->fingerprint), array("email" => $this->email), 1);
+        // var_dump($query);
+
+        //UPDATE `users` SET `fingerprint` = 'eb49c8bb7e273a58b2fc35b560a77398' WHERE `users`.`ID` = 1;
         // $id = Query::getIDByEmail($this->email);
         // setcookie("email", $this->email, time() + 60 * 60 * 24 * 30, "/"); #cookie lasts for 30 days
         // setcookie("hash", Query::pw_hash($this->fingerprint.$this->id), time() + 60 * 60 * 24 * 30, "/"); #cookie lasts for 30 days
@@ -52,14 +55,11 @@ class Login extends Query {
 }
 
 $fingerprint = $_POST['fingerprint'];
+
 $email = $_POST['email'];
 $password = $_POST['password'];
 $login = new Login($email, $password, $fingerprint);
 
 // echo var_dump($_COOKIE["email"]);
-$header = "Location: http://www.myattendance.ca";
-if ($login->passwordIsCorrect) {
-    $header .=
-}
 header("Location: http://www.myattendance.ca");
 exit();

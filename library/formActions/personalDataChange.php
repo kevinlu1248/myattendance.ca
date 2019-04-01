@@ -28,7 +28,9 @@ class dataChange extends Query {
                 'studentID' => $this->newStudentId);
             $conditions = array ('ID' => $this->uid);
             $query = Query::update("user", $changes, $conditions, 1);
-            var_dump($query);
+            // var_dump($query);
+            echo $query->didSucceed;
+            // var_dump($query);
         }
     }
 }
@@ -40,3 +42,9 @@ $newStudentId = $_POST["studentId"];
 $password = $_POST["password"];
 
 $dataChange = new dataChange($uid, $newFirst, $newLast, $newStudentId, $password);
+$passwordIsCorrect = $dataChange->passwordIsCorrect;
+$didSucceed = $dataChange->didSucceed;
+echo $didSucceed;
+
+header("Location: http://www.myattendance.ca/?password_is_correct=$passwordIsCorrect;success=$didSucceed");
+exit();

@@ -6,11 +6,12 @@ class QueryResponse {
     public $errs;
     //PDOStatement
     public $result;
-    //public $didSucceed;
+    public $didSucceed;
 
-    public function __construct(array $errs, $result) {
+    public function __construct(array $errs, $result, $didSucceed = true) {
         $this->errs = $errs;
         $this->result = $result;
+        $this->didSucceed = $didSucceed;
     }
 
     #Combine responses
@@ -24,30 +25,36 @@ class QueryResponse {
 class Query extends Dbh{
     #returns PDOStatement
     #Runs an SQL Query
-    private function run($sql, array $inputs = NULL) {
+    //, array $inputs = NULL
+    private function run(string $sql, array $inputs = NULL) {
         $errs = [];
         // echo var_dump($inputs);
         // echo $sql;
         try {
             // with responses
-            if ($inputs === NULL) {
-                $dbh = new Dbh();
-                $query = $dbh->connect()->query($sql);
-                $result = $query;
-            }
+            // if ($inputs === NULL) {
+            //     $dbh = new Dbh();
+            //     $query = $dbh->connect()->query($sql);
+            //     $result = $query;
+            // }
             // without responses
-            else {
-                $dbh = new Dbh();
-                $result = $dbh->connect()->prepare($sql);
-                $result->execute($inputs);
+            // else {
+            $dbh = new Dbh();
+            $result = $dbh->connect()->prepare($sql);
+            if ($inputs) {
+                $didSucceed = $result->execute($inputs);
+            } else {
+                $didSucceed = $result->execute();
             }
+
+            // }
         } catch (PDOException $e){
             $errs[] = $e->getMessage();
         }
         //echo var_dump(new QueryResponse($errs, $result));
         //echo [$sql, $inputs];
         // var_dump($result);
-        return new QueryResponse($errs, $result);
+        return new QueryResponse($errs, $result, $didSucceed);
     }
 
     //Function for inserting data into the database
@@ -99,18 +106,21 @@ class Query extends Dbh{
     protected function update(string $table, array $columns, array $conditions, int $limit = 0) {
         $columnsInput = "";
         $conditionsInput = "";
+        $inputs = [];
         foreach ($columns as $key => $value) {
+            $inputs[] = $value;
             if (is_int($value)) {
-                $columnsInput .= "$key = $value, ";
+                $columnsInput .= "$key = ?, ";
             } else {
-                $columnsInput .= "$key = '$value', ";
+                $columnsInput .= "$key = '?', ";
             }
         }
         foreach ($conditions as $key => $value) {
+            $inputs[] = $value;
             if (is_int($value)) {
-                $conditionsInput .= "$key = $value, ";
+                $conditionsInput .= "$key = ?, ";
             } else {
-                $conditionsInput .= "$key = '$value', ";
+                $conditionsInput .= "$key = '?', ";
             }
         }
         $columnsInput = rtrim($columnsInput, ", ");
@@ -122,7 +132,9 @@ class Query extends Dbh{
         if ($limit) {
             $sql .= "\n LIMIT $limit;";
         }
-        $sth = self::run($sql);
+
+        // var_dump($inputs);
+        $sth = self::run($sql, $inputs);
         return $sth;
     }
 
