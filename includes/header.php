@@ -11,7 +11,8 @@
     <meta name="description" content="A protoype for an attendance system.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#5DBCD2">
-    <link rel="icon" type="image/jpg" href="/myattendance.ca/assets/favicon.jpg">
+    <!-- <base href="/myattendance.ca/" target="_blank"> -->
+    <link rel="icon" type="image/jpg" href="/assets/favicon.jpg">
     <title>Attendance</title>
 
     <!--Bower-->
@@ -76,35 +77,50 @@
         <div class="float-right">
             <?php
                 $logout = $_GET['logout'];
-                if ($logout === "true") {
+                if ($logout == "true") {
                     unset($_SESSION["user"]);
                 }
 
                 $user = $_SESSION["user"];
                 $passwordIsCorrect = $_GET["passwordIsCorrect"];
                 // $passwordIsCorrect == 0 means that login is incorrect
-                if ($user == NULL || $passwordIsCorrect == "false") {
+                if ($logout == "true" || $user == NULL || $passwordIsCorrect == "false") {
+                    // require_once __DIR__."userDisplay/form.php";
                     require_once "userDisplay/form.php";
                 } else {
                     require_once "userDisplay/user.php";
                 }
             ?>
         </div>
-        <!-- For toggle -->
     </nav>
-<div id="main" class="padding-x-md">
-<noscript>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      Your browser does not support Javascript. Please enable Javascript or use a different browser.
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-</noscript>
+    <div id="main" class="padding-x-md">
+    <noscript>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          Your browser does not support Javascript. Please enable Javascript or use a different browser.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    </noscript>
 
-<?php
-    if ($passwordIsCorrect == "false") {
-        require_once "loginFailure.php";
-        unset($_SESSION["user"]);
-    }
-?>
+    <?php
+        if ($_GET["signup"] === "success") {
+            include_once "banners/signupSuccess.php";
+        }
+        unset($_GET["signup"]);
+
+        if (($_GET["passwordIsCorrect"] == "false" && !$user) || $_GET["updatePasswordIsCorrect"] == "false") {
+            require_once "banners/loginFailure.php";
+            unset($_GET["passwordIsCorrect"]);
+            unset($_GET["updatePasswordIsCorrect"]);
+        }
+
+        if ($_GET["updateSuccess"] == "true") {
+            // echo "test";
+            require_once "banners/updateSuccess.php";
+        } else if ($_GET["updatePasswordIsCorrect"] == "true") {
+            require_once "banners/updateSuccess.php";
+        } else if ($_GET["updateSuccess"] == "false" && $_GET["updatePasswordIsCorrect"] == "false") {
+            require_once "banners/loginFailure.php";
+        }
+    ?>

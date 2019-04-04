@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    console.log("automatic login initiated");
     setTimeout(function () {
         Fingerprint2.get(function (components) {
             var values = components.map(function (component) { return component.value });
@@ -7,7 +8,9 @@ $(document).ready(function() {
                 method: "POST",
                 url: "/myattendance.ca/library/formActions/autoLogin.php",
                 data: {fingerprint: murmur},
-                // error: function(err) {console.log(err)}
+                error: function(error) {
+                    console.log(error);
+                }
             })
             .done(function(result) {
                 console.log(result);

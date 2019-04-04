@@ -46,12 +46,15 @@ class Login extends Query {
     }
 
     private function setAutoLogin() {
+        # updates fingerprint
         $query = Query::update("users", array("fingerprint" => $this->fingerprint), array("email" => $this->email), 1);
         // var_dump($query);
 
-        //UPDATE `users` SET `fingerprint` = 'eb49c8bb7e273a58b2fc35b560a77398' WHERE `users`.`ID` = 1;
+        // UPDATE `users` SET `fingerprint` = 'eb49c8bb7e273a58b2fc35b560a77398' WHERE `users`.`ID` = 1;
         // $id = Query::getIDByEmail($this->email);
-        // setcookie("email", $this->email, time() + 60 * 60 * 24 * 30, "/"); #cookie lasts for 30 days
+
+        # for autologin
+        setcookie("email", $this->email, time() + 60 * 60 * 24 * 30, "/"); #cookie lasts for 30 days
         // setcookie("hash", Query::pw_hash($this->fingerprint.$this->id), time() + 60 * 60 * 24 * 30, "/"); #cookie lasts for 30 days
     }
 }
@@ -60,6 +63,7 @@ $fingerprint = $_POST['fingerprint'];
 // echo $fingerprint;
 $email = $_POST['email'];
 $password = $_POST['password'];
+// echo $fingerprint;
 
 $login = new Login($email, $password, $fingerprint);
 $passwordIsCorrect = ($login->passwordIsCorrect) ? 'true' : 'false';

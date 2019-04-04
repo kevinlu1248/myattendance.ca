@@ -8,7 +8,7 @@ class QueryResponse {
     public $result;
     public $didSucceed;
 
-    public function __construct(array $errs, $result, bool $didSucceed = NULL) {
+    public function __construct(array $errs, $result, bool $didSucceed = NULL, int $affectedRows = NULL) {
         $this->errs = $errs;
         $this->result = $result;
         $this->didSucceed = $didSucceed;
@@ -40,13 +40,16 @@ class Query extends Dbh{
             // }
             // without responses
             // else {
+            // returns PDOStatement
             $dbh = new Dbh();
             $result = $dbh->connect()->prepare($sql);
             if ($inputs) {
+                var_dump($sql);
                 $didSucceed = $result->execute($inputs);
             } else {
                 $didSucceed = $result->execute();
             }
+            $affectedRows = $result->rowCount();
             // }
         } catch (PDOException $e){
             $errs[] = $e->getMessage();
@@ -54,7 +57,8 @@ class Query extends Dbh{
         //echo var_dump(new QueryResponse($errs, $result));
         //echo [$sql, $inputs];
         // var_dump($result);
-        return new QueryResponse($errs, $result, $didSucceed);
+
+        return new QueryResponse($errs, $result, $didSucceed, $affectedRows);
     }
 
     //Function for inserting data into the database
@@ -108,19 +112,11 @@ class Query extends Dbh{
         $inputs = [];
         foreach ($columns as $key => $value) {
             $inputs[] = $value;
-            if (is_int($value)) {
-                $columnsInput .= "$key = ?, ";
-            } else {
-                $columnsInput .= "$key = '?', ";
-            }
+            $columnsInput .= "$key = ?, ";
         }
         foreach ($conditions as $key => $value) {
             $inputs[] = $value;
-            if (is_int($value)) {
-                $conditionsInput .= "$key = ?, ";
-            } else {
-                $conditionsInput .= "$key = '?', ";
-            }
+            $conditionsInput .= "$key = ?, ";
         }
         $columnsInput = rtrim($columnsInput, ", ");
         $conditionsInput = rtrim($conditionsInput, ", ");
@@ -132,7 +128,11 @@ class Query extends Dbh{
             $sql .= "\n LIMIT $limit;";
         }
 
+        // $sql = "UPDATE users SET firstName = '?', lastName = '?', studentID = ? WHERE ID = ? LIMIT 1;";
         $sth = self::run($sql, $inputs);
+        // var_dump($sql);
+        // var_dump($inputs);
+        // echo showQuery($sql, $inputs);
         return $sth;
     }
 
@@ -202,5 +202,36 @@ class Query extends Dbh{
 
     public function getIDByEmail(string $email){
         return self::getData(["ID"], "users", array("email" => $email), 1)->result->fetch(PDO::FETCH_NUM)[0];
+    }
+
+    public function showQuery($query, $params)
+    {
+        $keys = array();
+        $values = array();
+
+        # build a regular expression for each parameter
+        foreach ($params as $key=>$value)
+        {
+            if (is_string($key))
+            {
+                $keys[] = '/:'.$key.'/';
+            }
+            else
+            {
+                $keys[] = '/[?]/';
+            }
+
+            if(is_numeric($value))
+            {
+                $values[] = intval($value);
+            }
+            else
+            {
+                $values[] = '"'.$value .'"';
+            }
+        }
+
+        $query = preg_replace($keys, $values, $query, 1, $count);
+        return $query;
     }
 }

@@ -2,9 +2,10 @@
     <input id="signin_fingerprint" type="text" name="fingerprint" hidden>
     <input id="signin_email" class="form-control mr-sm-2" type="text" placeholder="Email" name="email">
     <input id="signin_password" class="form-control mr-sm-2" type="password" placeholder="Password" name="password" autocomplete="current-password">
-    <button id="login" class="btn btn-outline-primary mr-sm-2" type="submit">Login</button>
+    <button id="login" class="btn btn-outline-primary mr-sm-2" type="submit" disabled>Login</button>
     <a class="btn btn-primary my-2 my-sm-0 l-3" href="signup">Sign Up</a>
 </form>
+
 <script>
     $(document).ready(function() {
         var fingerprint = $("#fingerprint");
@@ -34,3 +35,4 @@
         password.keyup(checkValidity);
     });
 </script>
+

@@ -1,4 +1,4 @@
-<div id="editData" class="col-sm">
+s<div id="editData" class="col-sm">
     <div id="editData-holder" class="row-4 text-white">
         <h1> <?php echo "$first $last";?> </h1>
         <h3>
@@ -27,7 +27,7 @@
             Password Change
         </h3>
         <form id="changePassword">
-            <div class="form-group" action="" method="POST">
+            <div class="form-group" action="../library/formActions/passwordChange.php" method="POST">
                 <input type="password" placeholder="Current Password" class="form-control input-box" maxlength="20" id="cpwd" autocomplete="current-password" name="cpwd">
             </div>
             <div class="form-group">

@@ -78,8 +78,9 @@ $(document).ready(function() {
             var murmur = Fingerprint2.x64hash128(values.join(''), 31);
             $("#fingerprint").val(murmur);
             $("#signin_fingerprint").val(murmur);
-            console.log(murmur);
+            console.log("fingerprint:" + murmur);
             // console.log(values);
+            $("#login").prop('disabled', false);
         })
     }, 200);
 
